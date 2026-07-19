@@ -1,0 +1,342 @@
+/* ===============================
+   Google Font
+=================================*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
+/* ===============================
+   Main Background
+=================================*/
+.stApp{
+    background: linear-gradient(135deg,#0f172a,#111827,#020617);
+    color:white;
+}
+
+/* ===============================
+   Hide Streamlit Branding
+=================================*/
+#MainMenu{
+    visibility:hidden;
+}
+
+footer{
+    visibility:hidden;
+}
+
+header{
+    visibility:hidden;
+}
+
+/* ===============================
+   Title
+=================================*/
+h1{
+    text-align:center;
+    color:white;
+    font-size:3rem;
+    font-weight:700;
+}
+
+h2,h3{
+    color:white;
+}
+
+/* ===============================
+   Sidebar
+=================================*/
+section[data-testid="stSidebar"]{
+
+    background:#111827;
+    border-right:1px solid #374151;
+
+}
+
+/* ===============================
+   Input Box
+=================================*/
+.stTextInput input{
+
+    background:#1e293b;
+
+    color:white;
+
+    border:1px solid #3b82f6;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    font-size:16px;
+}
+
+.stTextInput input:focus{
+
+    border:2px solid #60a5fa;
+
+    box-shadow:0px 0px 12px #2563eb;
+
+}
+
+/* ===============================
+   Chat Input
+=================================*/
+[data-testid="stChatInput"]{
+
+    background:#1e293b;
+
+    border-radius:16px;
+
+    border:1px solid #3b82f6;
+
+}
+
+/* ===============================
+   Buttons
+=================================*/
+.stButton>button{
+
+    width:100%;
+
+    background:linear-gradient(90deg,#2563eb,#3b82f6);
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+}
+
+.stButton>button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0px 8px 20px rgba(37,99,235,.4);
+
+}
+
+/* ===============================
+   Metrics
+=================================*/
+[data-testid="metric-container"]{
+
+    background:#1e293b;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    border:1px solid #374151;
+
+}
+
+/* ===============================
+   Chat Messages
+=================================*/
+[data-testid="stChatMessage"]{
+
+    background:#111827;
+
+    border-radius:18px;
+
+    padding:15px;
+
+    margin-bottom:15px;
+
+    border:1px solid #374151;
+
+}
+
+/* ===============================
+   Expander
+=================================*/
+.streamlit-expanderHeader{
+
+    background:#1e293b;
+
+    border-radius:10px;
+
+    color:white;
+
+}
+
+.streamlit-expanderContent{
+
+    background:#0f172a;
+
+}
+
+/* ===============================
+   Success Box
+=================================*/
+.stSuccess{
+
+    border-radius:12px;
+
+}
+
+/* ===============================
+   Warning Box
+=================================*/
+.stWarning{
+
+    border-radius:12px;
+
+}
+
+/* ===============================
+   Info Box
+=================================*/
+.stInfo{
+
+    border-radius:12px;
+
+}
+
+/* ===============================
+   Progress Bar
+=================================*/
+.stProgress > div > div > div > div{
+
+    background:#2563eb;
+
+}
+
+/* ===============================
+   Image
+=================================*/
+img{
+
+    border-radius:15px;
+
+}
+
+/* ===============================
+   Divider
+=================================*/
+hr{
+
+    border:1px solid #374151;
+
+}
+
+/* ===============================
+   Scrollbar
+=================================*/
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#111827;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#3b82f6;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#60a5fa;
+
+}
+
+/* ===============================
+   Cards
+=================================*/
+.block-container{
+
+    padding-top:2rem;
+
+    padding-left:3rem;
+
+    padding-right:3rem;
+
+}
+
+/* ===============================
+   Animations
+=================================*/
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+[data-testid="stVerticalBlock"]{
+
+    animation:fadeIn .5s ease-in-out;
+
+}
+
+/* ===============================
+   Caption
+=================================*/
+[data-testid="stCaptionContainer"]{
+
+    text-align:center;
+
+    color:#cbd5e1;
+
+}
+
+/* ===============================
+   Footer Text
+=================================*/
+.footer{
+
+    text-align:center;
+
+    color:#94a3b8;
+
+    margin-top:50px;
+
+}
+
+/* ===============================
+   Chat Avatar
+=================================*/
+[data-testid="chatAvatarIcon-user"]{
+
+    background:#2563eb;
+
+}
+
+[data-testid="chatAvatarIcon-assistant"]{
+
+    background:#10b981;
+
+}
