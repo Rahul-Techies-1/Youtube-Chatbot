@@ -6,6 +6,7 @@ import os
 from urllib.parse import urlparse, parse_qs
 from groq import Groq
 from dotenv import load_dotenv
+import streamlit as st
 
 from youtube_transcript_api import YouTubeTranscriptApi
 
@@ -175,8 +176,16 @@ def process_video(video_url):
     # HuggingFace Client
     # ----------------------------------------
 
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        try:
+            api_key = st.secrets["GROQ_API_KEY"]
+        except Exception:
+            raise ValueError(
+                "GROQ_API_KEY is missing. Please configure it in your .env file or Streamlit Secrets."
+            )
     llm = Groq(
-        api_key=os.getenv("GROQ_API_KEY")
+        api_key=api_key
     )
 
     print("✅ Video Processed Successfully")
