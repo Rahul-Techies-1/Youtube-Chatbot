@@ -4,7 +4,7 @@
 
 import os
 from urllib.parse import urlparse, parse_qs
-
+from groq import Groq
 from dotenv import load_dotenv
 
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -66,7 +66,9 @@ def get_transcript(video_id):
             languages=["hi", "en"]
         )
 
-    except Exception:
+    except Exception as e:
+
+        print(f"Preferred language retrieval failed: {e}")
 
         transcript = ytt.fetch(
             video_id
@@ -78,7 +80,6 @@ def get_transcript(video_id):
     )
 
     return text
-
 
 # ==========================================================
 # Process Video
@@ -174,12 +175,8 @@ def process_video(video_url):
     # HuggingFace Client
     # ----------------------------------------
 
-    llm = InferenceClient(
-
-        token=os.getenv(
-            "HUGGINGFACEHUB_ACCESS_TOKEN"
-        )
-
+    llm = Groq(
+        api_key=os.getenv("GROQ_API_KEY")
     )
 
     print("✅ Video Processed Successfully")
@@ -254,7 +251,7 @@ ANSWER
 
     response = llm.chat.completions.create(
 
-        model="Qwen/Qwen2.5-7B-Instruct",
+        model="openai/gpt-oss-20b",
 
         messages=[
 
