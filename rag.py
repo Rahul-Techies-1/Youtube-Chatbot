@@ -31,6 +31,9 @@ vector_store = None
 retriever = None
 llm = None
 
+class TranscriptRetrievalError(Exception):
+    pass
+
 # ==========================================================
 # Extract Video ID
 # ==========================================================
@@ -69,11 +72,11 @@ def get_transcript(video_id):
 
     except Exception as e:
 
-        print(f"Preferred language retrieval failed: {e}")
+        print(f"Transcript retrieval failed: {e}")
 
-        transcript = ytt.fetch(
-            video_id
-        )
+        raise TranscriptRetrievalError(
+            "YouTube is blocking transcript retrieval from this server."
+        ) from e
 
     text = " ".join(
         snippet.text
@@ -86,29 +89,23 @@ def get_transcript(video_id):
 # Process Video
 # ==========================================================
 
-def process_video(video_url):
+def process_video(video_url, manual_transcript=None):
 
     global vector_store
     global retriever
     global llm
 
-    # ----------------------------------------
-    # Video ID
-    # ----------------------------------------
-
     video_id = extract_video_id(video_url)
 
-    # ----------------------------------------
-    # Transcript
-    # ----------------------------------------
-
-    transcript = get_transcript(video_id)
-
-    print("Transcript Downloaded Successfully")
-
-    # ----------------------------------------
-    # LangChain Document
-    # ----------------------------------------
+    if manual_transcript is not None:
+        transcript = manual_transcript.strip()
+        if not transcript:
+            raise ValueError(
+                "Manual transcript cannot be empty."
+            )
+    else:
+        transcript = get_transcript(video_id)
+        print("Transcript Retrieved Successfully")
 
     documents = [
 

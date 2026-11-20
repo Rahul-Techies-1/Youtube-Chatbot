@@ -1,7 +1,11 @@
 import streamlit as st
 import time
 
-from rag import process_video, ask_with_sources
+from rag import (
+    process_video,
+    ask_with_sources,
+    TranscriptRetrievalError
+)
 
 from utils import (
     get_thumbnail,
@@ -50,6 +54,9 @@ if "video_processed" not in st.session_state:
 if "video_url" not in st.session_state:
     st.session_state.video_url = ""
 
+if "manual_transcript_needed" not in st.session_state:
+    st.session_state.manual_transcript_needed = False
+
 # -------------------------------------------------------
 # SIDEBAR
 # -------------------------------------------------------
@@ -65,6 +72,8 @@ with st.sidebar:
         st.session_state.messages = []
 
         st.session_state.video_processed = False
+
+        st.session_state.manual_transcript_needed = False
 
         st.rerun()
 
@@ -182,6 +191,10 @@ st.divider()
 # PROCESS BUTTON
 # -------------------------------------------------------
 
+# -------------------------------------------------------
+# PROCESS BUTTON
+# -------------------------------------------------------
+
 if st.button(
     "🚀 Process Video",
     use_container_width=True
@@ -209,13 +222,101 @@ if st.button(
 
             time.sleep(0.8)
 
-        process_video(video_url)
+        try:
 
-        st.session_state.video_processed = True
+            process_video(video_url)
 
-        st.success("Video processed successfully!")
+            st.session_state.video_processed = True
 
-        st.balloons()
+            st.session_state.manual_transcript_needed = False
+
+            st.success("Video processed successfully!")
+
+            st.balloons()
+
+        except TranscriptRetrievalError:
+
+            st.session_state.video_processed = False
+
+            st.session_state.manual_transcript_needed = True
+
+            st.warning(
+                "YouTube is blocking transcript retrieval. "
+                "You can paste the transcript manually below."
+            )
+
+        except Exception as e:
+
+            st.error(
+                f"Video processing failed: {e}"
+            )
+
+st.divider()
+
+# -------------------------------------------------------
+# MANUAL TRANSCRIPT FALLBACK
+# -------------------------------------------------------
+
+if st.session_state.manual_transcript_needed:
+
+    st.warning(
+        "⚠️ YouTube blocked automatic transcript retrieval "
+        "from this server."
+    )
+
+    st.info(
+        "Please copy the transcript from YouTube and "
+        "paste it below to continue."
+    )
+
+    manual_transcript = st.text_area(
+        "Paste YouTube Transcript",
+        placeholder="Paste the complete transcript here...",
+        height=300,
+        key="manual_transcript_input"
+    )
+
+    if st.button(
+        "📄 Process Manual Transcript",
+        use_container_width=True
+    ):
+
+        if not manual_transcript.strip():
+
+            st.warning(
+                "Please paste a transcript first."
+            )
+
+        else:
+
+            try:
+
+                with st.spinner(
+                    "Processing manual transcript..."
+                ):
+
+                    process_video(
+                        video_url,
+                        manual_transcript=manual_transcript
+                    )
+
+                st.session_state.video_processed = True
+
+                st.session_state.manual_transcript_needed = False
+
+                st.success(
+                    "Transcript processed successfully!"
+                )
+
+                st.balloons()
+
+                st.rerun()
+
+            except Exception as e:
+
+                st.error(
+                    f"Processing failed: {e}"
+                )
 
 st.divider()
 # -------------------------------------------------------
@@ -410,6 +511,8 @@ with col2:
         st.session_state.messages = []
 
         st.session_state.video_processed = False
+
+        st.session_state.manual_transcript_needed = False
 
         st.rerun()
 
